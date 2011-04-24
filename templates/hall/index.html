@@ -1,0 +1,45 @@
+{%extends "../base.html"%}
+{%block content%}
+  <script src="{{static_url("js/subscribe.js")}}" type="text/javascript"></script>
+  <script>
+  $(function(){
+    function handleMessage(message) {
+      if (message.type == "delete")
+        $("#room"+message.id).remove();
+      else if(message.type == 'update')
+        $("#room"+message.id).html(message.html);
+      else{
+        var node = $(message.html);
+        node.hide();
+        $("#rooms").append(node);
+        node.slideDown();
+      }
+    }
+    subscribe("hall", handleMessage);
+  });
+  </script>
+  <!-- <a id="create-game">�?�</a> -->
+  <form action="/createGame" method="post">
+    <p><label>房间名:</label><input type="text" name="name"/>
+    <input type="submit" value="创建房间"/>
+    {{ xsrf_form_html() }}
+  </form>
+  <table>
+    <tbody id="rooms">
+    <tr>
+      <th>房间号</th>
+      <th>房间名</th>
+      <th>房主</th>
+      <th>人数</th>
+      <th>状态</th>
+      <th>创建时间</th>
+    </tr>
+    {%for game in games%}
+      {%include "../game/game_unit.html"%}
+    {%end%}
+    </tbody>
+  </table>
+  <!-- <div id="game-create-dlg">
+    ?�:<input type="text" name="name" id="name"/>
+  </div> -->
+{%end%}

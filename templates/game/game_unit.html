@@ -1,0 +1,11 @@
+
+    <tr id="room{{game.id}}" style="display: table-row;">
+      <td>{{game.id}}</td>
+      <td>{{game.name}}</td>
+      <td>{{game.host.name}}</td>
+      <td>{{game.player_list.count()}}/8</td>
+      <td>{{game.state}}</td>
+      <td>{{game.create_time}}</td>
+      <td><a href="/joinGame/{{game.id}}">加入</a></td>
+    </tr>  
+

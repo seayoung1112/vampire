@@ -1,0 +1,36 @@
+.player {
+  width:90px; height:120px; background:#0066CC; float:left; color:#111111;
+  margin: 0px 8px 8px 0px;
+}
+.hidden {display:none;}
+body {
+  background:none repeat scroll 0 0 #CCFFFF;
+  color: #000000;
+}
+#word-region {
+  background:#FBC2C4;
+  color:#111111;
+  height: 200px;
+  margin-bottom: 10px;
+  overflow:scroll;
+}
+/*user-panel*/
+#user-panel {
+  background:#FFFF00;
+  color:#111111;
+  padding:5px;
+}
+textarea{
+  height: 50px;
+  width: 685px;
+}
+/*user-panel*/
+#history {
+  padding:10px
+  background:#D5EDF8;
+  color:#111111;
+  height: 370px;
+}
+.selected {
+  background:#CCFF99;
+}

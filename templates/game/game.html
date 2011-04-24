@@ -1,0 +1,99 @@
+{%extends "../base.html"%}
+{%block content%}
+  <script src="{{static_url("js/subscribe.js")}}" type="text/javascript"></script>
+  <script>
+  $(function(){
+    uid = $("#cuser-id").val();
+    function handleMessage(message) {
+      if (message.type == "user-leave"){
+        if(uid == message.host_id){
+          $("#is-host").val(true);
+          $action.html("开始");
+          $action.attr("id", "start");
+          $action.attr("disabled", !message.can_start);
+        } 
+        $("#player"+message.user_id).remove();
+      }
+      else if(message.type == 'user-state-change'){
+        $("#start").attr("disabled", !message.can_start);
+        $("#player"+message.user_id).html(message.html);
+      }
+      else if(message.type == 'user-join')
+      {
+        var node = $(message.html);
+        node.hide();
+        $("#players").append(node);
+        node.slideDown();
+      }
+      else if(message.type == 'game-start'){
+        $("#user-panel").html(message.html);
+      }
+      else if(message.type == 'get-tip'){
+        $("#user-panel").html(message.html);
+        $('#player' + message.speaker).addClass('selected');
+        if(uid == message.speaker)
+          $('#say').attr('disabled', false);
+        var name = $('#user-panel > .player-name').val();
+        $('#status-bar').val(name + '发言');
+      }
+      else if(message.type == 'say'){
+        $('#word-region').append('<p>' + message.name + ':' + message.content + '</p>');
+      }
+      else if(message.type == 'chat'){
+        $('#history').append('<p>' + message.name + ':' + message.content + '</p>');
+      }
+      
+    }
+    game_id = $("#game-id").val();
+    subscribe("game" + game_id, handleMessage);
+    
+    $action = $(".action-btn");
+    $action.click(function(){
+        $.postJSON("/roomAction", {"action": this.id, "id": game_id},function(data){
+          if(!data.refresh)
+            return;
+          $action.html(data.name);
+          $action.attr("id", data.action);
+        }); 
+    });
+    $('#chat-btn').click(function(){
+      $.postJSON('/chat', {"id": game_id, "content": $("#chat-panel textarea").val()});
+      $("#chat-panel textarea").val('');
+    })
+  });
+  </script>
+  <p>房间号:{{game.id}},房间名:{{game.name}}，参与人数：{{game.player_list.count()}}/8<a href="/quitGame">返回大厅</a></p>
+  <input id="game-id" type="text" class="hidden" value="{{game.id}}"/>
+  <input id="is-host" type="text" class="hidden" value="{{current_user.game_play.is_host}}"/>
+  <input id="cuser-id" type="text" class="hidden" value="{{current_user.id}}"/>
+  <div id="players" class="span-24">
+    {%for player in game.player_list%}
+      {{ user = player.user}}
+      {%include '../player/player_unit.html'%}
+    {%end%}
+  </div>
+  <div class="span-18">
+    <div id = "status-bar">
+      
+    </div>
+    <div id="word-region">
+      
+    </div>
+    <div id="chat-panel">
+      <textarea></textarea>
+      <button id='chat-btn'>聊天</button>
+    </div>
+    <div id="user-panel">
+      <textarea></textarea>
+      {% if current_user.game_play.is_host%}
+      <button id="start" class="action-btn" disabled="true">开始</button>
+      {%else%}
+      <button id="prepare" class="action-btn">准备</button>
+      {%end%}
+    </div>
+  </div>
+  <div class="span-6 last" id="history">
+    
+  </div>
+  
+{%end%}

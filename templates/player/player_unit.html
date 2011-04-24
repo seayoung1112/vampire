@@ -1,0 +1,12 @@
+<div id="player{{user.id}}" class="player">
+  <p class='player-name'>{{user.name}}</p>
+  {% if user.game_play.state == 'prepared' %}
+  <p>就绪</p>
+  {%end%}
+  {% if user.game_play.is_host%}
+  <p>主机</p>
+  {%end%}
+  {%if user.game_play.is_questioner%}
+    <p>出题者</p>
+  {%end%}
+</div>

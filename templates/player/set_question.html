@@ -1,0 +1,10 @@
+<script>
+  $(function(){
+    $("#set-question").click(function(){
+      $.postJSON("/setQuestion", {"id": game_id, "riddle": $("#riddle").val(), "answer": $("#answer").val()});
+    });
+  });
+</script>
+<p>谜面<input type="text" id="riddle"/></p>
+<p>谜底<input type="text" id="answer"/></p>
+<p><button id="set-question">出题</button></p>

@@ -1,0 +1,16 @@
+<script>
+$(function(){
+  $('#say').click(function(){
+      $.postJSON("inTurn//say", {"id": game_id, "content": $("#say-content").val()});
+      $('#say-content').val('');
+  });
+  $('pass').click(function(){
+    $.postJSON('inTurn/pass', {'id': game_id});
+  });
+});
+</script>
+<p>{{role}}</p>
+<p>{{tip}}</p>
+<textarea id='say-content'></textarea>
+<button id="say" disabled="true">说</button>
+<button id="pass">过</button>

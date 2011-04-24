@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>register</title>
+	<meta name="generator" content="Studio 3 http://aptana.com/">
+	<meta name="author" content="jonathan">
+	<!-- Date: 2011-03-03 -->
+</head>
+<body>
+  <form action="/register" method="post">
+    {{ xsrf_form_html() }}
+    <p>用户名: <input type="text" name="name"></p>
+    <p>密码: <input type="password" name="password"></p>
+    <p>确认密码: <input type="password" name="confirmed_password"></p>
+    <p>邮件地址: <input type="email" name="email"/></p>
+    <input type="submit" value="注册">
+  </form>
+</body>
+</html>
